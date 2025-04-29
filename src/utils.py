@@ -44,15 +44,20 @@ def analisis_categorico_categorico(df, lista_num_cat=[]):
     if resto == 0:
         parte_entera -= 1
     
-    fig, axis = plt.subplots(parte_entera, 3, figsize=(10, 7))
+    fig, axis = plt.subplots(parte_entera, 3, figsize=(1, 3))
 
     for column in col_cat:
         fila = col_cat.index(column) // 3
         columna = col_cat.index(column) % 3
-        if columna != 0:
-            sns.histplot(ax=axis[fila, columna], data=df, x=column).set(ylabel=None, xticks=[])
+
+        ax = axis[fila, columna]
+        sns.histplot(ax=ax, data=df, x=column)
+
+        if df[column].nunique() <= 10:
+            ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right')
         else:
-            sns.histplot(ax=axis[fila, columna], data=df, x=column).set(xticks=[])
+            ax.set_xticks([])
+        ax.set_ylabel(None)
 
     plt.tight_layout()
     plt.show()
